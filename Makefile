@@ -1,9 +1,9 @@
 COMPILER = clang++
 LANGUAGE = cpp
 
-SOURCES = main
+SOURCES = main logger/logger
 LIBS = 
-SUBDIRS = 
+SUBDIRS = logger
 MKSUBDIRS = $(addprefix $(OBJPATH)/, $(SUBDIRS))
 
 SRCPATH = ./src

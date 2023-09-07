@@ -1,6 +1,8 @@
-#include <iostream>
+#include "logger/logger.h"
 
 int main() {
-    std::cout << "Hello!\n";
+    
+    Logger::FileLogger logger("./log.txt");
+
     return 0;
 }
