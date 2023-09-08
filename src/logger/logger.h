@@ -10,10 +10,11 @@ namespace Logger {
         INFO_LEVEL, ERROR_LEVEL
     };
 
+
     std::string levelToStr(LogLevel level);
 
-    class ILogger {
 
+    class ILogger {
     public:
 
         virtual void log(LogLevel level, const std::string &message) = 0;
@@ -21,13 +22,17 @@ namespace Logger {
     };
 
 
-    class FileLogger : public ILogger {
-
-        std::ofstream fileStream;
-
+    class StdIOLogger : ILogger {
+    private:
+        std::ostream &&outputStream;
+    
     public:
 
-        FileLogger(const std::string &filePath);
+        StdIOLogger(const StdIOLogger &logger) = delete;
+
+        StdIOLogger& operator= (const StdIOLogger &logger) = delete;
+
+        StdIOLogger(std::ostream &outputStream);
 
         virtual void log(LogLevel level, const std::string &message) override;
 

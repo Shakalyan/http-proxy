@@ -8,8 +8,8 @@ std::string Logger::levelToStr(Logger::LogLevel level) {
     return strReprs[level];
 }
 
-Logger::FileLogger::FileLogger(const std::string &filePath) {
-    this->fileStream.open(filePath, std::ios_base::app);
+Logger::StdIOLogger::StdIOLogger(std::ostream &outputStream) : outputStream(std::move(outputStream)) {
+    this->outputStream << "Started logging...\n";
 }
 
 static std::string currentLocalTime() {
@@ -20,6 +20,6 @@ static std::string currentLocalTime() {
     return std::string(outputTime);
 }
 
-void Logger::FileLogger::log(Logger::LogLevel level, const std::string &message) {
-    this->fileStream << currentLocalTime() << " [" << levelToStr(level) << "] " << message << std::endl;
+void Logger::StdIOLogger::log(Logger::LogLevel level, const std::string &message) {
+    this->outputStream << currentLocalTime() << " [" << levelToStr(level) << "] " << message << std::endl;
 }
