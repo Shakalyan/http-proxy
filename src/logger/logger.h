@@ -17,26 +17,26 @@ namespace Logger {
     class ILogger {
     public:
 
-        virtual void log(LogLevel level, const std::string &message) = 0;
+        virtual void log(LogLevel level, std::string const& message) = 0;
 
     };
 
 
     class StdIOLogger : public ILogger {
     private:
-        std::ostream &&outputStream;
+        std::ostream& outputStream;
     
     public:
 
-        StdIOLogger(const StdIOLogger &logger) = delete;
+        StdIOLogger(StdIOLogger const& logger) = delete;
 
-        StdIOLogger& operator= (const StdIOLogger &logger) = delete;
+        StdIOLogger& operator= (StdIOLogger const& logger) = delete;
 
-        explicit StdIOLogger(std::ostream &outputStream);
+        explicit StdIOLogger(std::ostream& outputStream);
 
         virtual ~StdIOLogger();
 
-        virtual void log(LogLevel level, const std::string &message) override;
+        virtual void log(LogLevel level, std::string const& message) override;
 
     };
 

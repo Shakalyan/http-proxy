@@ -8,7 +8,7 @@ std::string Logger::levelToStr(Logger::LogLevel level) {
     return strReprs[level];
 }
 
-Logger::StdIOLogger::StdIOLogger(std::ostream &outputStream) : outputStream(std::move(outputStream)) {
+Logger::StdIOLogger::StdIOLogger(std::ostream& outputStream) : outputStream(outputStream) {
     this->outputStream << "Start logging...\n";
 }
 
@@ -29,6 +29,6 @@ static std::string currentLocalTime() {
     return std::string(outputTime);
 }
 
-void Logger::StdIOLogger::log(Logger::LogLevel level, const std::string &message) {
-    this->outputStream << currentLocalTime() << " [" << levelToStr(level) << "] " << message << std::endl;
+void Logger::StdIOLogger::log(Logger::LogLevel level, std::string const& message) {
+    this->outputStream << currentLocalTime() << " [" << levelToStr(level) << "]\t" << message << std::endl;
 }
