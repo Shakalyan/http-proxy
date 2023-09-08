@@ -22,7 +22,7 @@ namespace Logger {
     };
 
 
-    class StdIOLogger : ILogger {
+    class StdIOLogger : public ILogger {
     private:
         std::ostream &&outputStream;
     
@@ -32,7 +32,9 @@ namespace Logger {
 
         StdIOLogger& operator= (const StdIOLogger &logger) = delete;
 
-        StdIOLogger(std::ostream &outputStream);
+        explicit StdIOLogger(std::ostream &outputStream);
+
+        virtual ~StdIOLogger();
 
         virtual void log(LogLevel level, const std::string &message) override;
 
