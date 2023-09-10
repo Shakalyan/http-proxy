@@ -12,7 +12,9 @@ namespace Proxy {
         EXC_SETSOCKOPT,
         EXC_ADDR_CNVRSN,
         EXC_SOCK_IN_USE,
-        EXC_CONNECT
+        EXC_CONNECT,
+        EXC_INVALID_SOCK,
+        EXC_ACCEPT
     };
 
     class ProxyException {
