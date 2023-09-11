@@ -28,10 +28,10 @@ void Proxy::ProxyServer::start() {
         serverSocket.listen();
         logger.log(Logger::INFO_LEVEL, "Start listening to connections...");
         
-        SocketManager sm(logger);
+        SocketManager socketManager(logger);
         std::vector<BuffSocket> sockets;
         while (true) {
-            sm.checkSockets(serverSocket, sockets);
+            socketManager.checkSockets(serverSocket, sockets);
         }
 
     } catch (ProxyException& e) {

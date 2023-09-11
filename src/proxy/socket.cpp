@@ -112,8 +112,10 @@ void Proxy::Socket::connect() {
     }
 
     sockaddr_in sockAddr;
+    memset(&sockAddr, 0, sizeof(sockAddr));
     sockAddr.sin_family = domain;
     sockAddr.sin_port = htons(port);
+
     if (inet_pton(domain, address.c_str(), &sockAddr.sin_addr.s_addr) == -1) {
         throw ProxyException(EXC_ADDR_CNVRSN, strerror(errno));
     }

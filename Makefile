@@ -1,9 +1,9 @@
 COMPILER = clang++
 LANGUAGE = cpp
 
-SOURCES = main logger/logger proxy/proxy proxy/exception proxy/socket utils/rwbuffer proxy/sockmanager proxy/buffsocket
+SOURCES = main logger/logger proxy/proxy proxy/exception proxy/socket utils/rwbuffer proxy/sockmanager proxy/buffsocket http/httpheader http/httpmethod http/httprequest
 LIBS = 
-SUBDIRS = logger proxy utils
+SUBDIRS = logger proxy utils http
 MKSUBDIRS = $(addprefix $(OBJPATH)/, $(SUBDIRS))
 
 SRCPATH = ./src

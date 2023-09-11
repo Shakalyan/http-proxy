@@ -9,6 +9,8 @@ namespace Proxy {
     class BuffSocket {
     private:
         Socket socket;
+        BuffSocket *linkedSocket;
+
         unsigned int MTU;
 
         std::unique_ptr<char[]> mtub;
@@ -35,8 +37,11 @@ namespace Proxy {
         virtual bool write();
         
         void setWriteBuffer(std::unique_ptr<char[]> data, int nbytes);
-        std::string getReadBuffer();
+        std::unique_ptr<char[]> getReadBuffer(int& size);
         int getSocketFD() const;
+
+        BuffSocket* getLinkedSocket() const;
+        void setLinkedSocket(BuffSocket* socket);
 
         bool wbufferIsEmpty() const;
         bool rbufferIsEmpty() const;

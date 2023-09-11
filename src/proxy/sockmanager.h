@@ -27,6 +27,7 @@ namespace Proxy {
     
     private:
         int prepareFDs(Socket& serverSocket, std::vector<BuffSocket>& sockets);
+        void handleRequest(std::string const& requestData, int socketIndex, std::vector<BuffSocket>& sockets);
 
     };
 

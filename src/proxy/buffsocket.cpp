@@ -1,8 +1,10 @@
 #include "buffsocket.h"
 #include <utility>
+#include <iostream>
 
 Proxy::BuffSocket::BuffSocket(Socket socket, unsigned int MTU, unsigned int tuCount) 
-        : socket(std::move(socket)), 
+        : socket(std::move(socket)),
+          linkedSocket(nullptr),
           MTU(MTU), 
           mtub(new char[MTU]), 
           rbuffer(MTU * tuCount),
@@ -18,6 +20,7 @@ Proxy::BuffSocket::~BuffSocket() {
 
 Proxy::BuffSocket::BuffSocket(BuffSocket&& buffSocket) 
         : socket(std::move(buffSocket.socket)),
+          linkedSocket(buffSocket.linkedSocket),
           MTU(buffSocket.MTU),
           mtub(std::move(buffSocket.mtub)),
           rbuffer(std::move(buffSocket.rbuffer)),
@@ -26,11 +29,13 @@ Proxy::BuffSocket::BuffSocket(BuffSocket&& buffSocket)
           wbufferPtr(buffSocket.wbufferPtr),
           wbufferEmpty(buffSocket.wbufferEmpty),
           rbufferEmpty(buffSocket.rbufferEmpty) {
-
+    buffSocket.linkedSocket = nullptr;
 }
 
 Proxy::BuffSocket& Proxy::BuffSocket::operator= (BuffSocket&& buffSocket) {
     socket = std::move(buffSocket.socket);
+    linkedSocket = buffSocket.linkedSocket;
+    buffSocket.linkedSocket = nullptr;
     MTU = buffSocket.MTU;
     mtub = std::move(buffSocket.mtub);
     rbuffer = std::move(buffSocket.rbuffer);
@@ -79,15 +84,15 @@ void Proxy::BuffSocket::setWriteBuffer(std::unique_ptr<char[]> data, int nbytes)
     wbufferEmpty = false;
 }
 
-std::string Proxy::BuffSocket::getReadBuffer() {
-    int bsize = rbuffer.getBufferSize();
-    std::unique_ptr<char[]> cstr(new char[bsize+1]);
+std::unique_ptr<char[]> Proxy::BuffSocket::getReadBuffer(int& size) {
+    size = rbuffer.getBufferSize();
+    std::unique_ptr<char[]> cstr(new char[size+1]);
     rbuffer.resetPointer();
-    rbuffer.read(cstr.get(), bsize);
+    rbuffer.read(cstr.get(), size);
     rbuffer.resetPointer();
     rbufferEmpty = true;
-    cstr.get()[bsize] = '\0';
-    return std::string(cstr.get());
+    cstr.get()[size] = '\0';
+    return cstr;
 }
 
 bool Proxy::BuffSocket::wbufferIsEmpty() const {
@@ -96,4 +101,12 @@ bool Proxy::BuffSocket::wbufferIsEmpty() const {
 
 bool Proxy::BuffSocket::rbufferIsEmpty() const {
     return rbufferEmpty;
+}
+
+Proxy::BuffSocket* Proxy::BuffSocket::getLinkedSocket() const {
+    return linkedSocket;
+}
+
+void Proxy::BuffSocket::setLinkedSocket(BuffSocket *socket) {
+    linkedSocket = socket;
 }
