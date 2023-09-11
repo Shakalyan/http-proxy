@@ -1,7 +1,5 @@
 #include "httprequest.h"
 
-#include <iostream>
-
 HTTP::HttpRequest::HttpRequest(HttpMethod method, 
                                std::string const& dstHost,
                                int dstPort, 
@@ -52,6 +50,7 @@ HTTP::HttpRequest& HTTP::HttpRequest::operator= (HttpRequest&& request) {
     urn = std::move(request.urn);
     headers = std::move(request.headers);
     content = std::move(request.content);
+    return *this;
 }
 
 HTTP::HttpRequest::~HttpRequest() {

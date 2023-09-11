@@ -4,7 +4,6 @@
 
 #include <string.h>
 #include <unistd.h>
-#include <iostream>
 
 Proxy::SocketManager::SocketManager(Logger::ILogger& logger) : logger(logger) {
 }
@@ -35,7 +34,6 @@ int Proxy::SocketManager::prepareFDs(Socket& serverSocket, std::vector<BuffSocke
 
 void Proxy::SocketManager::handleRequest(std::string const& requestData, int socketIndex, std::vector<BuffSocket>& sockets) {
     if (sockets[socketIndex].getLinkedSocket() != nullptr) {
-        std::cout << "LINKED SOCKET IS NOT NULLPTR\n";
         return;
     }
     HTTP::HttpRequest request = HTTP::parseHttpRequest(requestData);
